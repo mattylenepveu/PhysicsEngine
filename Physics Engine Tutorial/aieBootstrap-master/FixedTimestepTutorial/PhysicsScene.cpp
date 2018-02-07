@@ -2,6 +2,8 @@
 #include "PhysicsObject.h"
 #include <algorithm>
 #include <iostream>
+#include <list>
+#include "RigidBody.h"
 
 PhysicsScene::PhysicsScene()
 {
@@ -29,8 +31,9 @@ void PhysicsScene::removeActor(PhysicsObject* actor)
 
 void PhysicsScene::update(float dt)
 {
-	// update physics at a fixed time step
+	static std::list<PhysicsObject*> dirty;
 
+	// update physics at a fixed time step
 	static float accumulatedTime = 0.0f;
 	accumulatedTime += dt;
 	
@@ -42,6 +45,33 @@ void PhysicsScene::update(float dt)
 		}
 
 		accumulatedTime -= m_timeStep;
+
+		// check for collisions (ideally you'd want to have some sort of
+		// scene management in place)
+		for (auto pActor : m_actors) 
+		{
+			for (auto pOther : m_actors) 
+			{
+				if (pActor == pOther)
+					continue;
+
+				if (std::find(dirty.begin(), dirty.end(), pActor) != dirty.end() &&
+					std::find(dirty.begin(), dirty.end(), pOther) != dirty.end())
+					continue;
+
+				RigidBody* pRigid = dynamic_cast<RigidBody*>(pActor);
+
+				if (pRigid->checkCollision(pOther) == true) 
+				{
+					pRigid->applyForceToActor( dynamic_cast<RigidBody*>(pOther),
+						pRigid->getVelocity() * pRigid->getMass());
+
+					dirty.push_back(pRigid);
+					dirty.push_back(pOther);
+				}
+			}
+		}
+		dirty.clear();
 	}
 }
 
@@ -50,5 +80,13 @@ void PhysicsScene::updateGizmos()
 	for (auto pActor : m_actors)
 	{
 		pActor->makeGizmo();
+	}
+}
+
+void PhysicsScene::debugScene()
+{
+	for (auto pActor : m_actors) 
+	{
+		pActor->debug();
 	}
 }
