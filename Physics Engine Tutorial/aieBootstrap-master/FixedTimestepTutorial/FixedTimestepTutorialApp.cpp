@@ -2,7 +2,9 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
+#include "Plane.h"
 #include "Sphere.h"
+#include "Box.h"
 #include <glm\ext.hpp>
 #include <Gizmos.h>
 
@@ -27,15 +29,39 @@ bool FixedTimestepTutorialApp::startup()
 	m_physicsScene->setGravity(glm::vec2(0, 0));
 	m_physicsScene->setTimeStep(0.003f);
 
-	Sphere* ball;
-	ball = new Sphere(glm::vec2(-40, 0), glm::vec2(10, 30), 3.0f, 1, glm::vec4(1, 0, 0, 1));
-	m_physicsScene->addActor(ball);
+	Sphere* ball1 = new Sphere(glm::vec2(-4, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0, 0, 1));
+	Sphere* ball2 = new Sphere(glm::vec2(4, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 0, 1));
+	Sphere* ball3 = new Sphere(glm::vec2(8, 4), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 1, 1));
+
+	Box* box1 = new Box(glm::vec2(-4, 8), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0, 0, 1, 1));
+	Box* box2 = new Box(glm::vec2(4, 8), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 1, 0, 1));
+	Box* box3 = new Box(glm::vec2(-8, 4), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0, 1, 1));
+
+	Plane* plane = new Plane(glm::vec2(-1, 1), 0);
+
+	m_physicsScene->addActor(ball1);
+	m_physicsScene->addActor(ball2);
+	m_physicsScene->addActor(ball3);
+
+	m_physicsScene->addActor(box1);
+	m_physicsScene->addActor(box2);
+	m_physicsScene->addActor(box3);
+
+	m_physicsScene->addActor(plane);
+
+	ball1->applyForce(glm::vec2(30, 0));
+	ball2->applyForce(glm::vec2(-30, 0));
+	ball3->applyForce(glm::vec2(0, -15));
+
+	box1->applyForce(glm::vec2(30, 0));
+	box2->applyForce(glm::vec2(-30, 0));
+	box3->applyForce(glm::vec2(0, -15));
 
 	return true;
 }
 
-void FixedTimestepTutorialApp::shutdown() {
-
+void FixedTimestepTutorialApp::shutdown() 
+{
 	delete m_font;
 	delete m_2dRenderer;
 }
@@ -66,7 +92,9 @@ void FixedTimestepTutorialApp::draw()
 	// draw your stuff here!
 	static float aspectRatio = 16 / 9.f;
 	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
-						 -100 / aspectRatio, 100 / aspectRatio, -1.0f, 1.0f));
+						-100 / aspectRatio, 100 / aspectRatio, 
+						-1.0f, 1.0f));
+
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
