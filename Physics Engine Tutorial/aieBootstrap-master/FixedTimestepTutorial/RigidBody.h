@@ -13,6 +13,7 @@ public:
 
 	void applyForce(glm::vec2 force);
 	void applyForceToActor(RigidBody* actor2, glm::vec2 force);
+	void resolveCollision(RigidBody* actor2);
 
 	glm::vec2 getPosition() { return m_position; }
 	float getRotation() { return m_rotation; }

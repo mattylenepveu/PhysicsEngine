@@ -125,16 +125,18 @@ bool PhysicsScene::plane2aabb(PhysicsObject* obj1, PhysicsObject* obj2)
 
 	if (plane != nullptr || box != nullptr)
 	{
-		glm::vec2 v = box->getPosition() - plane->getCentre();
-		glm::vec2 halfWidth = box->getPosition() + glm::vec2
-							 (box->getWidth() * 0.5f, box->getHeight());
-		glm::vec2 halfHeight = box->getPosition() + glm::vec2
-							  (box->getWidth(), box->getHeight() * 0.5f);
+		glm::vec2 v = plane->getNormal();
+		glm::vec2 bottomLeft = box->getMin();
+		glm::vec2 bottomRight = box->getMin() + glm::vec2(box->getWidth(), 0);
+		glm::vec2 topLeft = box->getMin() + glm::vec2(0, box->getHeight());
+		glm::vec2 topRight = box->getMax();
 
-		if (glm::length(v) < glm::length(halfWidth) ||
-			glm::length(v) < glm::length(halfHeight))
+		if (glm::dot(v, bottomLeft) - plane->getDistance() < 0 || 
+			glm::dot(v, bottomRight) - plane->getDistance() < 0 ||
+			glm::dot(v, topLeft) - plane->getDistance() < 0 || 
+			glm::dot(v, topRight) - plane->getDistance() < 0)
 		{
-			box->setVelocity(glm::vec2(0, 0));
+			plane->resolveCollision(box);
 			return true;
 		}
 	}
@@ -163,7 +165,7 @@ bool PhysicsScene::sphere2Plane(PhysicsObject* obj1, PhysicsObject* obj2)
 
 		if (intersection > 0)
 		{
-			sphere->setVelocity(glm::vec2(0, 0));
+			plane->resolveCollision(sphere);
 			return true;
 		}
 	}
@@ -183,8 +185,7 @@ bool PhysicsScene::sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 
 		if (glm::length(v) <= radiusTotal)
 		{
-			sphere1->setVelocity(glm::vec2(0, 0));
-			sphere2->setVelocity(glm::vec2(0, 0));
+			sphere1->resolveCollision(sphere2);
 			return true;
 		}
 	}
@@ -203,8 +204,7 @@ bool PhysicsScene::sphere2aabb(PhysicsObject* obj1, PhysicsObject* obj2)
 
 		if (glm::length(v) <= sphere->getRadius())
 		{
-			sphere->setVelocity(glm::vec2(0, 0));
-			box->setVelocity(glm::vec2(0, 0));
+			sphere->resolveCollision(box);
 			return true;
 		}
 	}
@@ -234,14 +234,13 @@ bool PhysicsScene::aabb2aabb(PhysicsObject* obj1, PhysicsObject* obj2)
 		glm::vec2 min2 = box2->getMin();
 		glm::vec2 max2 = box2->getMax();
 
-		if (max1.x < min2.x || max2.x < min1.x || max1.y < min2.y || max2.y < min1.y)
+		if (min1.x <= max2.x &&
+			min1.y <= max2.y &&
+			max1.x >= min2.x &&
+			max1.y >= min2.y)
 		{
-			return false;
-		}
-		else
-		{
-			box1->setVelocity(glm::vec2(0, 0));
-			box2->setVelocity(glm::vec2(0, 0));
+			box1->setVelocity(glm::vec2(0.0f, 0.0f));
+			box2->setVelocity(glm::vec2(0.0f, 0.0f));
 			return true;
 		}
 	}

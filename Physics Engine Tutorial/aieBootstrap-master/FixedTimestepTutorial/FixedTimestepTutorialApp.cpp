@@ -26,36 +26,46 @@ bool FixedTimestepTutorialApp::startup()
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	m_physicsScene = new PhysicsScene();
-	m_physicsScene->setGravity(glm::vec2(0, 0));
+	m_physicsScene->setGravity(glm::vec2(0, -12));
 	m_physicsScene->setTimeStep(0.003f);
 
-	Sphere* ball1 = new Sphere(glm::vec2(-4, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0, 0, 1));
-	Sphere* ball2 = new Sphere(glm::vec2(4, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 0, 1));
-	Sphere* ball3 = new Sphere(glm::vec2(8, 4), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 1, 1));
+	Sphere* ball1 = new Sphere(glm::vec2(-16, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0, 0, 1));
+	Sphere* ball2 = new Sphere(glm::vec2(16, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0, 1, 0, 1));
+	Sphere* ball3 = new Sphere(glm::vec2(32, 16), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(0.75f, 0.75f, 0.75f, 1));
+	Sphere* ball4 = new Sphere(glm::vec2(-16, 16), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0.5f, 0, 1));
 
-	Box* box1 = new Box(glm::vec2(-4, 8), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0, 0, 1, 1));
-	Box* box2 = new Box(glm::vec2(4, 8), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 1, 0, 1));
-	Box* box3 = new Box(glm::vec2(-8, 4), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0, 1, 1));
+	Box* box1 = new Box(glm::vec2(-16, 32), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0, 0, 1, 1));
+	Box* box2 = new Box(glm::vec2(16, 32), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 1, 0, 1));
+	Box* box3 = new Box(glm::vec2(-32, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0, 1, 1));
+	Box* box4 = new Box(glm::vec2(16, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0.5f, 0, 0.7f, 1));
 
-	Plane* plane = new Plane(glm::vec2(-1, 1), 0);
+	Plane* plane1 = new Plane(glm::normalize(glm::vec2(-1, 10)), -30);
+	Plane* plane2 = new Plane(glm::normalize(glm::vec2(-10, 10)), -30);
+	Plane* plane3 = new Plane(glm::normalize(glm::vec2(10, 0)), -30);
 
 	m_physicsScene->addActor(ball1);
 	m_physicsScene->addActor(ball2);
 	m_physicsScene->addActor(ball3);
+	m_physicsScene->addActor(ball4);
 
 	m_physicsScene->addActor(box1);
 	m_physicsScene->addActor(box2);
 	m_physicsScene->addActor(box3);
+	m_physicsScene->addActor(box4);
 
-	m_physicsScene->addActor(plane);
+	m_physicsScene->addActor(plane1);
+	m_physicsScene->addActor(plane2);
+	m_physicsScene->addActor(plane3);
 
-	ball1->applyForce(glm::vec2(30, 0));
-	ball2->applyForce(glm::vec2(-30, 0));
-	ball3->applyForce(glm::vec2(0, -15));
+	ball1->applyForce(glm::vec2(50, 0));
+	ball2->applyForce(glm::vec2(-50, 0));
+	ball3->applyForce(glm::vec2(0, -25));
+	ball4->applyForce(glm::vec2(50, 0));
 
-	box1->applyForce(glm::vec2(30, 0));
-	box2->applyForce(glm::vec2(-30, 0));
-	box3->applyForce(glm::vec2(0, -15));
+	box1->applyForce(glm::vec2(50, 0));
+	box2->applyForce(glm::vec2(-50, 0));
+	box3->applyForce(glm::vec2(0, -25));
+	box4->applyForce(glm::vec2(-50, 0));
 
 	return true;
 }

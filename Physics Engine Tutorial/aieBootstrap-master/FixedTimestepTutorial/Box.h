@@ -15,8 +15,10 @@ public:
 	float getHeight() { return m_height; }
 
 	glm::vec2 getDimensions() { return m_dimensions; }
-	glm::vec2 getMin() { return m_min; }
-	glm::vec2 getMax() { return m_max; }
+	glm::vec2 getMin() { return glm::vec2(m_position.x - m_width, 
+								m_position.y - m_height); }
+	glm::vec2 getMax() { return glm::vec2(m_position.x + m_width, 
+								m_position.y + m_height); }
 
 	glm::vec4 getColour() { return m_colour; }
 
