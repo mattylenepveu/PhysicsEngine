@@ -26,7 +26,7 @@ bool FixedTimestepTutorialApp::startup()
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	m_physicsScene = new PhysicsScene();
-	m_physicsScene->setGravity(glm::vec2(0, -12));
+	m_physicsScene->setGravity(glm::vec2(0, -10));
 	m_physicsScene->setTimeStep(0.003f);
 
 	Sphere* ball1 = new Sphere(glm::vec2(-16, 0), glm::vec2(0, 0), 3.0f, 1.0f, glm::vec4(1, 0, 0, 1));
@@ -36,12 +36,12 @@ bool FixedTimestepTutorialApp::startup()
 
 	Box* box1 = new Box(glm::vec2(-16, 32), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0, 0, 1, 1));
 	Box* box2 = new Box(glm::vec2(16, 32), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 1, 0, 1));
-	Box* box3 = new Box(glm::vec2(-32, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0, 1, 1));
+	Box* box3 = new Box(glm::vec2(-32, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(1, 0.5f, 0.76f, 1));
 	Box* box4 = new Box(glm::vec2(16, 16), glm::vec2(0, 0), 3.0f, 1.0f, 1.0f, glm::vec4(0.5f, 0, 0.7f, 1));
 
 	Plane* plane1 = new Plane(glm::normalize(glm::vec2(-1, 10)), -30);
 	Plane* plane2 = new Plane(glm::normalize(glm::vec2(-10, 10)), -30);
-	Plane* plane3 = new Plane(glm::normalize(glm::vec2(10, 0)), -30);
+	Plane* plane3 = new Plane(glm::normalize(glm::vec2(10, 0)), -50);
 
 	m_physicsScene->addActor(ball1);
 	m_physicsScene->addActor(ball2);
@@ -74,6 +74,9 @@ void FixedTimestepTutorialApp::shutdown()
 {
 	delete m_font;
 	delete m_2dRenderer;
+	delete m_physicsScene;
+
+	aie::Gizmos::destroy();
 }
 
 void FixedTimestepTutorialApp::update(float deltaTime) 

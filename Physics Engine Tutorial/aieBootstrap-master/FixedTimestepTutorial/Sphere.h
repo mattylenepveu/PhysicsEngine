@@ -18,4 +18,3 @@ protected:
 	float m_radius;
 	glm::vec4 m_colour;
 };
-

@@ -1,7 +1,11 @@
+#include <crtdbg.h>
 #include "FixedTimestepTutorialApp.h"
 
-int main() {
-	
+int main() 
+{
+	// memory leak checker
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	// allocation
 	auto app = new FixedTimestepTutorialApp();
 

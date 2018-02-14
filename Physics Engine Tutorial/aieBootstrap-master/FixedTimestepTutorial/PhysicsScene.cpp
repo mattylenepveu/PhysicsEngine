@@ -186,6 +186,11 @@ bool PhysicsScene::sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 		if (glm::length(v) <= radiusTotal)
 		{
 			sphere1->resolveCollision(sphere2);
+
+			float overlap = glm::length(v) - radiusTotal;
+			glm::vec2 overlapVec =  glm::normalize(v) * overlap;
+			sphere2->setPosition(sphere2->getPosition() + overlapVec);
+
 			return true;
 		}
 	}
@@ -239,8 +244,7 @@ bool PhysicsScene::aabb2aabb(PhysicsObject* obj1, PhysicsObject* obj2)
 			max1.x >= min2.x &&
 			max1.y >= min2.y)
 		{
-			box1->setVelocity(glm::vec2(0.0f, 0.0f));
-			box2->setVelocity(glm::vec2(0.0f, 0.0f));
+			box1->resolveCollision(box2);
 			return true;
 		}
 	}
