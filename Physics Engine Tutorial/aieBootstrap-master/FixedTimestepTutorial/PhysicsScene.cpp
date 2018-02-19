@@ -45,7 +45,7 @@ void PhysicsScene::removeActor(PhysicsObject* actor)
 
 void PhysicsScene::update(float dt)
 {
-	static std::list<PhysicsObject*> dirty;
+	//static std::list<PhysicsObject*> dirty;
 
 	// update physics at a fixed time step
 	static float accumulatedTime = 0.0f;
@@ -185,11 +185,11 @@ bool PhysicsScene::sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 
 		if (glm::length(v) <= radiusTotal)
 		{
-			sphere1->resolveCollision(sphere2);
+			/*float overlap = glm::length(v) - radiusTotal;
+			glm::vec2 overlapVec = glm::normalize(v) * overlap;
+			sphere2->setPosition(sphere2->getPosition() + overlapVec);*/
 
-			float overlap = glm::length(v) - radiusTotal;
-			glm::vec2 overlapVec =  glm::normalize(v) * overlap;
-			sphere2->setPosition(sphere2->getPosition() + overlapVec);
+			sphere1->resolveCollision(sphere2);
 
 			return true;
 		}
